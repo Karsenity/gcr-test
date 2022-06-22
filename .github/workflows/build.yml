@@ -8,14 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: base64 encode service account key
-        id: base65-encode
-        shell: bash
-        run: echo "::set-output name=BASE64_KEY::$(echo '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}' | python -m base64 -e)"
-      
       - uses: RafikFarhad/push-to-gcr-github-action@v4.1
         with:
-          gcloud_service_key: ${{ steps.base64-encode.outputs.BASE64_KEY }} # can be base64 encoded or plain text
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # can be base64 encoded or plain text
           registry: gcr.io
           project_id: nomadic-flame-354021
           image_name: image-test
