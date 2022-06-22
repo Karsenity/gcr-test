@@ -1,5 +1,7 @@
 name: Push to GCR GitHub Action
-on: [push]
+on:
+  - push
+  - workflow_dispatch
 jobs:
   build-and-push-to-gcr:
     runs-on: ubuntu-latest
@@ -8,9 +10,9 @@ jobs:
       - uses: RafikFarhad/push-to-gcr-github-action@v4.1
         with:
           gcloud_service_key: ${{ secrets.TERRAFORM_SA }} # can be base64 encoded or plain text
-          registry: gcr.io
+          registry: test-repo
           project_id: nomadic-flame-354021
           image_name: image-test
           image_tag: latest,v1
-          dockerfile: ./docker/Dockerfile
+          dockerfile: ./Dockerfile
 
