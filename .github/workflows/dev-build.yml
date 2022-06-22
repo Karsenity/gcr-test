@@ -2,7 +2,7 @@ name: Push to GCR GitHub Action
 on:
   push:
     branches-ignore:
-      - master
+      - main
   workflow_dispatch:
 jobs:
   build-and-push-to-gcr:
