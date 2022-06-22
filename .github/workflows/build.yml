@@ -9,7 +9,7 @@ jobs:
         with:
           gcloud_service_key: ${{ secrets.TERRAFORM_SA }} # can be base64 encoded or plain text
           registry: gcr.io
-          project_id: test-project
+          project_id: nomadic-flame-354021
           image_name: image-test
           image_tag: latest,v1
           dockerfile: ./docker/Dockerfile
