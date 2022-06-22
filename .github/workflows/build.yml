@@ -10,7 +10,7 @@ jobs:
       - uses: RafikFarhad/push-to-gcr-github-action@v4.1
         with:
           gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # can be base64 encoded or plain text
-          registry: test-repo
+          registry: gcr.io
           project_id: nomadic-flame-354021
           image_name: image-test
           image_tag: latest,v1
