@@ -13,3 +13,4 @@ jobs:
           image_name: image-test
           image_tag: latest,v1
           dockerfile: ./docker/Dockerfile
+
