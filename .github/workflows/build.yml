@@ -11,7 +11,7 @@ jobs:
       - name: base64 encode service account key
         id: base65-encode
         shell: bash
-        run: echo "::set-output name=BASE64_KEY::$(echo ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} | python -m base64 -e)"
+        run: echo "::set-output name=BASE64_KEY::$(echo '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}' | python -m base64 -e)"
       
       - uses: RafikFarhad/push-to-gcr-github-action@v4.1
         with:
