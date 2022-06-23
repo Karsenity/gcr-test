@@ -1,21 +1,31 @@
 name: Push to GCR GitHub Action
 on:
-  push:
-    branches-ignore:
-      - main
-  workflow_dispatch:
+  - push
+  - workflow_dispatch
+
 jobs:
-  build-and-push-to-gcr:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - uses: RafikFarhad/push-to-gcr-github-action@v4.1
-        with:
-          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # can be base64 encoded or plain text
-          registry: gcr.io
-          project_id: nomadic-flame-354021
-          image_name: test-dev
-          image_tag: latest,v1
-          dockerfile: ./Dockerfile
+
+  BuildDev:
+    name: Deploy / Dev
+    if: github.event_name == 'push' && github.event.ref != 'refs/heads/main' && github.event.ref != 'refs/heads/production'
+    uses: ./.github/workflows/build
+    with:
+      env-name: dev
+    secrets: inherit
+
+  BuildStage:
+    name: Deploy / Stage
+    if: github.event.ref == 'refs/heads/main'
+    uses: ./.github/workflows/build
+    with:
+      env-name: stage
+    secrets: inherit
+
+  BuildProd:
+    name: Deploy / Prod
+    if: github.event.ref == 'refs/heads/production'
+    uses: ./.github/workflows/build
+    with:
+      env-name: prod
+    secrets: inherit
 
