@@ -12,19 +12,29 @@ jobs:
       - run: |
           if [[ ${{ github.event.ref }} == refs/heads/main ]]
           then
-            echo "::set-output stage"
+            echo "::set-output name=env_name::stage"
           elif [[ ${{ github.event.ref }} == refs/heads/production ]]
           then
-            echo "::set-output prod"
+            echo "::set-output name=env_name::prod"
           else
-            echo "::set-output dev"
+            echo "::set-output name=env_name::dev"
           fi    
 
   Build:
-    needs: FindEnvironment
     name: Deploy/${{ needs.FindEnvironment.outputs.output1 }}
+    needs: FindEnvironment
     uses: ./.github/workflows/build-and-save-to-gcr.yml
     with:
       env-name: ${{ needs.FindEnvironment.outputs.output1 }}
     secrets: inherit
+  
+  Debug:
+    name: Debug
+    needs: FindEnvironment
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ needs.FindEnvironment.outputs.output1 }}
+          echo ${{ needs.FindEnvironment.outputs.output2 }}
+    
 
