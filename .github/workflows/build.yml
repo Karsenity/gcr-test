@@ -5,6 +5,14 @@ on:
 
 jobs:
 
+  Build:
+    needs: FindEnvironment
+    name: Deploy / ${{ needs.FindEnvironment.outputs.env_name }}
+    uses: ./.github/workflows/build-and-save-to-gcr.yml
+    with:
+      env-name: ${{ needs.FindEnvironment.outputs.env_name }}
+    secrets: inherit
+    
   FindEnvironment:
     name: Finding Right Environment
     runs-on: ubuntu-latest
@@ -23,20 +31,6 @@ jobs:
             echo "::set-output name=env_name::dev"
           fi    
 
-  Build:
-    needs: FindEnvironment
-    name: Deploy / ${{ needs.FindEnvironment.outputs.env_name }}
-    uses: ./.github/workflows/build-and-save-to-gcr.yml
-    with:
-      env-name: ${{ needs.FindEnvironment.outputs.env_name }}
-    secrets: inherit
-  
-  Debug:
-    name: Debug
-    needs: FindEnvironment
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ needs.FindEnvironment.outputs.env_name }}
+
     
 
