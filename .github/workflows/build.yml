@@ -1,0 +1,30 @@
+name: Push to GCR GitHub Action
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+
+  FindEnvironment:
+    name: Finding Right Environment
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [[ ${{ github.event.ref }} == refs/heads/main ]]
+          then
+            echo "::set-output name=env::stage"
+          elif [[ ${{ github.event.ref }} == refs/heads/production ]]
+          then
+            echo "::set-output name=env::prod"
+          else
+            echo "::set-output name=env::dev"
+          fi    
+
+  Build:
+    needs: FindEnvironment
+    name: Deploy/${{ needs.FindEnvironment.outputs.output1 }}
+    uses: ./.github/workflows/build-and-save-to-gcr.yml
+    with:
+      env-name: ${{ needs.FindEnvironment.outputs.output1 }}
+    secrets: inherit
+
