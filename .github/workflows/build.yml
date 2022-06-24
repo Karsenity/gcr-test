@@ -8,19 +8,18 @@ jobs:
   FindEnvironment:
     name: Finding Right Environment
     runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.step1.outputs.env_name }}
     steps:
       - run: |
           if [[ ${{ github.event.ref }} == refs/heads/main ]]
           then
             echo "::set-output name=env_name::stage"
-            echo "stage"
           elif [[ ${{ github.event.ref }} == refs/heads/production ]]
           then
             echo "::set-output name=env_name::prod"
-            echo "prod"
           else
             echo "::set-output name=env_name::dev"
-            echo "dev"
           fi    
 
   Build:
@@ -38,6 +37,5 @@ jobs:
     steps:
       - run: |
           echo ${{ needs.FindEnvironment.outputs.env_name }}
-          echo ${{ needs.FindEnvironment.outputs.output2 }}
     
 
