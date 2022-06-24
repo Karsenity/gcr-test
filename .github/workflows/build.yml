@@ -12,12 +12,12 @@ jobs:
       - run: |
           if [[ ${{ github.event.ref }} == refs/heads/main ]]
           then
-            echo "::set-output name=env::stage"
+            echo "::set-output stage"
           elif [[ ${{ github.event.ref }} == refs/heads/production ]]
           then
-            echo "::set-output name=env::prod"
+            echo "::set-output prod"
           else
-            echo "::set-output name=env::dev"
+            echo "::set-output dev"
           fi    
 
   Build:
