@@ -12,20 +12,20 @@ jobs:
       - run: |
           if [[ ${{ github.event.ref }} == refs/heads/main ]]
           then
-            echo "::set-output name=env_name::'stage'"
+            echo "::set-output name=env_name::stage"
           elif [[ ${{ github.event.ref }} == refs/heads/production ]]
           then
-            echo "::set-output name=env_name::'prod'"
+            echo "::set-output name=env_name::prod"
           else
-            echo "::set-output name=env_name::'dev'"
+            echo "::set-output name=env_name::dev"
           fi    
 
   Build:
-    name: Deploy/${{ needs.FindEnvironment.outputs.output1 }}
     needs: FindEnvironment
+    name: Deploy / ${{ needs.FindEnvironment.outputs.env_name }}
     uses: ./.github/workflows/build-and-save-to-gcr.yml
     with:
-      env-name: ${{ needs.FindEnvironment.outputs.output1 }}
+      env-name: ${{ needs.FindEnvironment.outputs.env_name }}
     secrets: inherit
   
   Debug:
